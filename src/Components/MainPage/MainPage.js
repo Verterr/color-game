@@ -4,6 +4,7 @@ import GameConfig from "./GameConfig/GameConfig";
 import styled from 'styled-components';
 import videoBg from '../../Assets/video_bh.mp4';
 
+
 const MainPageContainer = styled.div`
     display: flex;
     align-items: center;

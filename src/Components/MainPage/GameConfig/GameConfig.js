@@ -1,6 +1,8 @@
 import React, {Component} from "react";
 import {Card, Stepper, Step, StepLabel, TextField, Button, Slider, Input, Typography} from "@material-ui/core";
 import styled from 'styled-components';
+import * as actions from "../../../store/gameLogic";
+import {connect} from "react-redux";
 
 const Wrapper = styled.div`
       position: absolute;
@@ -62,13 +64,22 @@ const ButtonContainer = styled.div`
     padding: 10px;
     `;
 
-export default class GameConfig extends Component{
+class GameConfig extends Component{
     state = {
+        username: "",
         activeStep: 0,
         gameSize: 10
     }
 
     nextStep = () => {
+        let currentStep = this.state.activeStep;
+        currentStep++;
+        this.setState({activeStep: currentStep});
+    }
+
+    startGame = () => {
+        this.props.setGameSize(this.state.gameSize);
+        this.props.setUsername(this.state.username);
         let currentStep = this.state.activeStep;
         currentStep++;
         this.setState({activeStep: currentStep});
@@ -89,9 +100,14 @@ export default class GameConfig extends Component{
         this.setState({gameSize: newValue});
     }
 
+    handleUsernameChange = event => {
+        const newValue = event.target.value
+        this.setState({username: newValue});
+    }
+
     enterUsername = (
         <StepContent>
-            <UsernameInput id="outlined-basic" label="Username" variant="outlined"/>
+            <UsernameInput id="outlined-basic" label="Username" variant="outlined" onChange={this.handleUsernameChange}/>
             <NextButton variant="contained" color="primary" onClick={this.nextStep}>Next</NextButton>
         </StepContent>
     )
@@ -118,7 +134,7 @@ export default class GameConfig extends Component{
             </SliderContainer>
             <ButtonContainer>
                 <NextButton variant="contained" color="primary" onClick={this.prevStep}>Prev</NextButton>
-                <NextButton variant="contained" color="primary" href="/game">Play</NextButton>
+                <NextButton variant="contained" color="primary" onClick={this.startGame}>Play</NextButton>
             </ButtonContainer>
         </StepContent>
     )
@@ -136,7 +152,6 @@ export default class GameConfig extends Component{
 
     render() {
         const gameSize = this.state.gameSize;
-        console.log(gameSize);
         return(
             <Wrapper>
                 <ConfigCard>
@@ -153,4 +168,20 @@ export default class GameConfig extends Component{
             </Wrapper>
         )
     }
+};
+
+const mapStateToProps = state => {
+    return {
+        username: state.username,
+        gameSize: state.gameSize
+    }
 }
+
+const mapDispatchToProps = dispatch => {
+    return {
+        setUsername: (username) => dispatch(actions.setUsername(username)),
+        setGameSize: (gameSize) => dispatch(actions.setGameSize(gameSize))
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(GameConfig);
