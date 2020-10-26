@@ -118,7 +118,7 @@ export default class GameConfig extends Component{
             </SliderContainer>
             <ButtonContainer>
                 <NextButton variant="contained" color="primary" onClick={this.prevStep}>Prev</NextButton>
-                <NextButton variant="contained" color="primary" onClick={this.nextStep}>Next</NextButton>
+                <NextButton variant="contained" color="primary" href="/game">Play</NextButton>
             </ButtonContainer>
         </StepContent>
     )
