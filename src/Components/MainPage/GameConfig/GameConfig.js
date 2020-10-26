@@ -1,8 +1,6 @@
 import React, {Component} from "react";
 import {Card, Stepper, Step, StepLabel, TextField, Button, Slider, Input, Typography} from "@material-ui/core";
 import styled from 'styled-components';
-import * as actions from "../../../store/gameLogic";
-import {connect} from "react-redux";
 
 const Wrapper = styled.div`
       position: absolute;
@@ -64,7 +62,7 @@ const ButtonContainer = styled.div`
     padding: 10px;
     `;
 
-class GameConfig extends Component{
+export default class GameConfig extends Component{
     state = {
         username: "",
         activeStep: 0,
@@ -78,11 +76,10 @@ class GameConfig extends Component{
     }
 
     startGame = () => {
-        this.props.setGameSize(this.state.gameSize);
-        this.props.setUsername(this.state.username);
         let currentStep = this.state.activeStep;
         currentStep++;
         this.setState({activeStep: currentStep});
+        window.location.replace(`/game?username=${this.state.username}&gamesize=${this.state.gameSize}`);
     }
 
     prevStep = () => {
@@ -169,19 +166,3 @@ class GameConfig extends Component{
         )
     }
 };
-
-const mapStateToProps = state => {
-    return {
-        username: state.username,
-        gameSize: state.gameSize
-    }
-}
-
-const mapDispatchToProps = dispatch => {
-    return {
-        setUsername: (username) => dispatch(actions.setUsername(username)),
-        setGameSize: (gameSize) => dispatch(actions.setGameSize(gameSize))
-    }
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(GameConfig);

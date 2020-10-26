@@ -1,6 +1,8 @@
 import React, {Component} from 'react';
 import styled from "styled-components";
 import {Card} from "@material-ui/core";
+import * as actions from "../../store/gameLogic";
+import {connect} from "react-redux";
 
 const GamePageContainer = styled.div`
     display: flex;
@@ -23,8 +25,16 @@ const GameCard = styled(Card)`
     height: 70%;
     `;
 
-export default class GamePage extends Component {
+class GamePage extends Component {
+
+    setNewState = () => {
+        const params = new URLSearchParams(window.location.search);
+        this.props.setUsername(params.get('username'));
+        this.props.setGameSize(params.get('gamesize'));
+    }
+
     render() {
+        this.setNewState();
         return(
             <GamePageContainer>
                 <DashboardCard></DashboardCard>
@@ -33,3 +43,19 @@ export default class GamePage extends Component {
         )
     }
 }
+
+const mapStateToProps = state => {
+    return {
+        username: state.username,
+        gameSize: state.gameSize
+    }
+}
+
+const mapDispatchToProps = dispatch => {
+    return {
+        setUsername: (username) => dispatch(actions.setUsername(username)),
+        setGameSize: (gameSize) => dispatch(actions.setGameSize(gameSize))
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(GamePage);
