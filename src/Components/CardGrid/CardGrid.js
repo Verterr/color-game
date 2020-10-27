@@ -32,7 +32,6 @@ class CardGrid extends Component {
         for (let i = 0; i < Math.pow(this.props.gameSize, 2); i++){
             const color = this.colorGenerator();
             this.cardList.push(<Color key={i} color={color}/>)
-            console.log(this.cardList);
         }
     }
 
