@@ -3,32 +3,42 @@ import styled from "styled-components";
 import {Card} from "@material-ui/core";
 import * as actions from "../../store/gameLogic";
 import {connect} from "react-redux";
+import CardGrid from "../CardGrid/CardGrid";
+
+const params = new URLSearchParams(window.location.search);
+let gameSize = params.get('gamesize');
 
 const GamePageContainer = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    width: 100vw;
-    height: 100vh;
+    min-width: 100vw;
+    min-height: 100vh;
+    width: 100%;
+    height: 100%;
     background: #5210A0;
     `;
 
 const DashboardCard = styled(Card)`
+    margin-top: 50px;
+    position: relative;
     width: 80%;
-    height: 10%;
-    margin-bottom: 15px;
+    height: 80px;
+    margin-bottom: 50px;
     `;
 
 const GameCard = styled(Card)`
-    width: 80%;
-    height: 70%;
+    width: ${gameSize*50+"px"};
+    height: ${gameSize*50+"px"};
+    display: flex;
+    flex-wrap: wrap;
+    margin-bottom: 50px;
     `;
 
 class GamePage extends Component {
 
     setNewState = () => {
-        const params = new URLSearchParams(window.location.search);
         this.props.setUsername(params.get('username'));
         this.props.setGameSize(params.get('gamesize'));
     }
@@ -37,8 +47,10 @@ class GamePage extends Component {
         this.setNewState();
         return(
             <GamePageContainer>
-                <DashboardCard></DashboardCard>
-                <GameCard></GameCard>
+                <DashboardCard/>
+                <GameCard>
+                    <CardGrid/>
+                </GameCard>
             </GamePageContainer>
         )
     }
